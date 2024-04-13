@@ -1,4 +1,5 @@
 #!/bin/bash
+# This script runs only autofixable formatters
 set -euxo pipefail
 
 poetry run ruff format

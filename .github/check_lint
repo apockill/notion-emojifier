@@ -1,4 +1,5 @@
 #!/bin/bash
+# This script runs the full check suite, without any automatic fixes
 set -euxo pipefail
 
 poetry run ruff check --no-fix
@@ -7,6 +8,6 @@ poetry run mypy --ignore-missing-imports notion_emojifier/ tests/
 poetry run darglint \
   --strictness short \
   --docstring-style sphinx \
-  --ignore-regexp '^test_.*'
+  --ignore-regex '^test_.*'
 poetry run cruft check
 echo "Lint successful!"
