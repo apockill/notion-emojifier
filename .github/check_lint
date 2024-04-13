@@ -1,0 +1,12 @@
+#!/bin/bash
+set -euxo pipefail
+
+poetry run ruff check --no-fix
+poetry run ruff format --check
+poetry run mypy --ignore-missing-imports notion_emojifier/ tests/
+poetry run darglint \
+  --strictness short \
+  --docstring-style sphinx \
+  --ignore-regexp '^test_.*'
+poetry run cruft check
+echo "Lint successful!"

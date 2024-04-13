@@ -1,0 +1,16 @@
+{
+  "template": "git@github.com:UrbanMachine/cookiecutter-python-template.git",
+  "commit": "f0af7d52920ac01fac269548dce1d74482c31562",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "email": "apocthiel@gmail.com",
+      "github_org": "apockill",
+      "project_name": "notion_emojifier",
+      "description": "Use LLMs to add emojis to all your notion pages",
+      "version": "0.1.0",
+      "_template": "git@github.com:UrbanMachine/cookiecutter-python-template.git"
+    }
+  },
+  "directory": null
+}
