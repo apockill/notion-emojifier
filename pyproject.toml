@@ -9,6 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 openai = "^1.17.1"
+notion-client = "^2.2.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^8.1.1"

@@ -646,6 +646,20 @@ files = [
 ]
 
 [[package]]
+name = "notion-client"
+version = "2.2.1"
+description = "Python client for the official Notion API"
+optional = false
+python-versions = ">=3.7, <4"
+files = [
+    {file = "notion-client-2.2.1.tar.gz", hash = "sha256:3827e381ccb5a21aeb606686787edfb6c7a10681cb3507c4d606a1918e791061"},
+    {file = "notion_client-2.2.1-py2.py3-none-any.whl", hash = "sha256:4ecf9ec527a124462f7bd407d9c9ead9853a9b2c8f00e56f3fa8fb15106ad871"},
+]
+
+[package.dependencies]
+httpx = ">=0.15.0"
+
+[[package]]
 name = "openai"
 version = "1.17.1"
 description = "The official Python library for the openai API"
@@ -1149,4 +1163,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "07665adb2e5aceb03197ab6ad37ff1a220596f175d7d27cc1db0f13ae202bbc3"
+content-hash = "d38d9147fc74b80c4fd21ddf4dedc3481c6eb606557d6da29728dfca5d977a56"
