@@ -69,7 +69,7 @@ class TitleEmojifier:
         prediction = cast(str, completion.choices[0].message.content)
         emojis = cast(list[str], [e["emoji"] for e in emoji_list(prediction)])
 
-        if len(emojis) != 1:
+        if len(emojis) == 0:
             if tries >= max_tries:
                 raise EmojiPredictionFailed(
                     f"Failed to suggest emoji for title: {title}"
