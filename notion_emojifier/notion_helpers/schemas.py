@@ -46,4 +46,8 @@ class Page(BaseModel):
                 f"property is a 'Name' property, or override the 'title-property-name'"
                 f" script argument to point to the correct title property."
             )
+
+        if len(title_property.title) != 1:
+            raise NoPageTitle(f"Page {self.id} has no title")
+
         return title_property.title[0].plain_text
