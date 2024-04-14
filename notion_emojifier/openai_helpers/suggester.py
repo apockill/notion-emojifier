@@ -1,17 +1,18 @@
 import logging
 
+from emoji import emoji_list
 from openai import OpenAI
 
 INSTRUCTIONS = """
-You predict the best emoji for task titles in a notion database. 
-The database is for a robotics company that builds lumber processing robots. 
-The company focuses on automating the process of removing nails from lumber, 
-allowing wood to be easily salvaged. Tasks can range from high level software or 
-mechanical engineering to low level tasks like cleaning the shop or organizing parts. 
+You predict the best emoji for task titles in a notion database.
+ The database is for a robotics company that builds lumber processing robots.
+ The company focuses on automating the process of removing nails from lumber,
+ allowing wood to be easily salvaged. Tasks can range from high level software or
+ mechanical engineering to low level tasks like cleaning the shop or organizing parts.
 
-When choosing an emoji, try to be creative, punny, and interesting. Don't choose 
-emojis that are generic- for example, don't use the robot emoji for a robotics
-related task. Try to use an emoji reflective of the task content itself.
+When choosing an emoji, try to be creative, punny, and interesting. Don't choose
+ emojis that are generic- for example, don't use the robot emoji for a robotics
+ related task. Try to use an emoji reflective of the task content itself.
 """
 
 PREAMBLE_MESSAGES = [
