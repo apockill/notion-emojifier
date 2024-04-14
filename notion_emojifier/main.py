@@ -8,8 +8,6 @@ from openai import OpenAI
 
 from notion_emojifier import notion_helpers, openai_helpers
 
-logging.basicConfig(level=logging.INFO)
-
 EXAMPLE_DATABASE_DESCRIPTION = """
  This database holds tasks for a robotics company that builds lumber processing robots.
  The company focuses on automating the process of removing nails from lumber,
@@ -19,6 +17,11 @@ EXAMPLE_DATABASE_DESCRIPTION = """
 
 
 def main() -> None:
+    # Logging configuration
+    logging.basicConfig(level=logging.INFO)
+    logging.getLogger("httpx").setLevel(logging.WARNING)
+    logging.getLogger("openai").setLevel(logging.WARNING)
+
     parser = ArgumentParser()
     parser.add_argument(
         "--notion-key", default=os.getenv("NOTION_KEY"), help="Notion API key"
@@ -34,7 +37,7 @@ def main() -> None:
         help="File to save the ID's of pages that were edited",
     )
     parser.add_argument(
-        "--database_description",
+        "--database-description",
         default=EXAMPLE_DATABASE_DESCRIPTION,
         help="Description of the database to be used in the OpenAI prompt",
     )
