@@ -66,6 +66,8 @@ class TitleEmojifier:
                     f"Failed to suggest emoji for title: {title}"
                 )
 
-            logging.warning(f"Invalid response: {prediction} for title {title}. Retrying...")
+            logging.warning(
+                f"Invalid response: {prediction} for title {title}. Retrying..."
+            )
             return self.suggest_emoji(title, tries + 1, max_tries=max_tries)
         return emojis[0]

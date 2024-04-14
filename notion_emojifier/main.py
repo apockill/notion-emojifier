@@ -3,8 +3,9 @@ import os
 from argparse import ArgumentParser
 
 from notion_client import Client
+from openai import OpenAI
 
-from notion_emojifier import notion_helpers
+from notion_emojifier import notion_helpers, openai_helpers
 
 logging.basicConfig(level=logging.INFO)
 
@@ -20,13 +21,19 @@ def main() -> None:
     parser.add_argument("--database-id", help="Notion database ID", required=True)
     args = parser.parse_args()
 
+    openai = OpenAI(api_key=args.openai_key)
+
     notion = Client(auth=args.notion_key)
 
     pages = notion_helpers.DatabasePageIterator(
         notion=notion, database_id=args.database_id
     )
     for i, page in enumerate(pages):
-        logging.info(page)
+        emoji = emojifier.suggest_emoji(page.title)
+        logging.info(f"Emoji for '{page.title}': {emoji}")
+
+        if i > 10:
+            break
 
 
 if __name__ == "__main__":
