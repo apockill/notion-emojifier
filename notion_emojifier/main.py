@@ -1,6 +1,7 @@
 import logging
 import os
 from argparse import ArgumentParser
+from pathlib import Path
 
 from notion_client import Client
 from openai import OpenAI
@@ -19,22 +20,37 @@ def main() -> None:
         "--openai-key", default=os.getenv("OPENAI_KEY"), help="OpenAI API key"
     )
     parser.add_argument("--database-id", help="Notion database ID", required=True)
+    parser.add_argument(
+        "--backup-file",
+        default=Path("emoji_backup.txt"),
+        type=Path,
+        help="File to save the ID's of pages that were edited",
+    )
     args = parser.parse_args()
 
     openai = OpenAI(api_key=args.openai_key)
-
     notion = Client(auth=args.notion_key)
 
+    # Create helpers
     pages = notion_helpers.DatabasePageIterator(
         notion=notion, database_id=args.database_id
     )
+    emoji_updater = notion_helpers.PageEmojiEditor(
+        client=notion, backup_file=args.backup_file, allow_overwrite=False
+    )
     emojifier = openai_helpers.TitleEmojifier(client=openai)
 
+    # Apply emojis to pages
     for i, page in enumerate(pages):
-        emoji = emojifier.suggest_emoji(page.title)
-        logging.info(f"Emoji for '{page.title}': {emoji}")
+        if page.icon is not None:
+            logging.info(f"Emoji already exists for page '{page.url}'. Skipping...")
+            continue
 
-        if i > 10:
+        emoji = emojifier.suggest_emoji(page.title)
+
+        logging.info(f"Applying emoji {emoji} to page '{page.title}', {page.url}")
+        emoji_updater.apply_emoji(emoji, page)
+        if i > 1:
             break
 
 
