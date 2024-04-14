@@ -1,4 +1,5 @@
 import logging
+from typing import cast
 
 from emoji import emoji_list
 from openai import OpenAI
@@ -49,16 +50,16 @@ class TitleEmojifier:
     def __init__(self, client: OpenAI):
         self._client = client
 
-    def suggest_emoji(self, title: str, tries=0, max_tries=5) -> str:
+    def suggest_emoji(self, title: str, tries: int = 0, max_tries: int = 5) -> str:
         completion = self._client.chat.completions.create(
             model="gpt-4",
             messages=[
-                *PREAMBLE_MESSAGES,
+                *PREAMBLE_MESSAGES,  # type: ignore
                 {"role": "user", "content": f"Title: {title}"},
             ],
         )
-        prediction = completion.choices[0].message.content
-        emojis = [e["emoji"] for e in emoji_list(prediction)]
+        prediction = cast(str, completion.choices[0].message.content)
+        emojis = cast(list[str], [e["emoji"] for e in emoji_list(prediction)])
 
         if len(emojis) != 1:
             if tries >= max_tries:
