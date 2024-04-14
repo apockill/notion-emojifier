@@ -34,6 +34,10 @@ poetry run emojify_notion \
   --database-description 'A task database for a robotics company, with SWE and mechanical engineering tasks.'
 ```
 
+If your database has renamed the 'title' property from the default (which is `NAME`),
+you can specify the new name with the `--title-property-name` argument.
+
+
 While running, you might see logs like:
 ```shell
 Applying emoji 🗓️ to page with title 'Make Wednesday TODO list'

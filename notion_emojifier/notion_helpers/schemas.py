@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Any
 
 from openai import BaseModel
 
@@ -20,19 +20,14 @@ class Name(BaseModel):
     title: list[Title]
 
 
-class PageProperties(BaseModel):
-    Name: Name
-
-
 class Page(BaseModel):
     id: str
     icon: None | Icon
     url: str
-    properties: PageProperties
+    properties: dict[str, Name | dict[Any, Any]]
     in_trash: bool
+    title_property_name: str
 
     @property
     def title(self) -> str:
-        if not self.properties.Name.title:
-            raise NoPageTitle(f"Page {self.id} has no title")
-        return self.properties.Name.title[0].plain_text
+        return self.properties[self.title_property_name].title[0].plain_text

@@ -41,6 +41,11 @@ def main() -> None:
         default=EXAMPLE_DATABASE_DESCRIPTION,
         help="Description of the database to be used in the OpenAI prompt",
     )
+    parser.add_argument(
+        "--title-property-name",
+        default="Name",
+        help="Name of the property that holds the title of the page",
+    )
 
     args = parser.parse_args()
 
@@ -49,7 +54,9 @@ def main() -> None:
 
     # Create helpers
     pages = notion_helpers.DatabasePageIterator(
-        notion=notion, database_id=args.database_id
+        notion=notion,
+        database_id=args.database_id,
+        title_property_name=args.title_property_name,
     )
     emoji_updater = notion_helpers.PageEmojiEditor(
         client=notion, backup_file=args.backup_file, allow_overwrite=False
