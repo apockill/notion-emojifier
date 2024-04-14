@@ -41,11 +41,15 @@ PREAMBLE_MESSAGES = [
 ]
 
 
+class EmojiPredictionFailed(Exception):
+    pass
+
+
 class TitleEmojifier:
     def __init__(self, client: OpenAI):
         self._client = client
 
-    def suggest_emoji(self, title: str) -> str:
+    def suggest_emoji(self, title: str, tries=0, max_tries=5) -> str:
         completion = self._client.chat.completions.create(
             model="gpt-4",
             messages=[
@@ -53,4 +57,15 @@ class TitleEmojifier:
                 {"role": "user", "content": f"Title: {title}"},
             ],
         )
-        logging.info(f"{title}: {completion.choices[0].message.content}")
+        prediction = completion.choices[0].message.content
+        emojis = [e["emoji"] for e in emoji_list(prediction)]
+
+        if len(emojis) != 1:
+            if tries >= max_tries:
+                raise EmojiPredictionFailed(
+                    f"Failed to suggest emoji for title: {title}"
+                )
+
+            logging.warning(f"Invalid response: {prediction} for title {title}. Retrying...")
+            return self.suggest_emoji(title, tries + 1, max_tries=max_tries)
+        return emojis[0]
