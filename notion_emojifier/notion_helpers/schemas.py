@@ -26,3 +26,7 @@ class Page(BaseModel):
     url: str
     properties: PageProperties
     in_trash: bool
+
+    @property
+    def title(self) -> str:
+        return self.properties.Name.title[0].plain_text
