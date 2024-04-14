@@ -28,6 +28,8 @@ def main() -> None:
     pages = notion_helpers.DatabasePageIterator(
         notion=notion, database_id=args.database_id
     )
+    emojifier = openai_helpers.TitleEmojifier(client=openai)
+
     for i, page in enumerate(pages):
         emoji = emojifier.suggest_emoji(page.title)
         logging.info(f"Emoji for '{page.title}': {emoji}")
