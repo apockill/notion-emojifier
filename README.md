@@ -25,6 +25,8 @@ _________________
 ```shell
 # Install dependencies
 poetry install
+
+# Apply emojis to a given database
 poetry run emojify_notion \
   --notion-key 'your_notion_api_key' \
   --openai-key 'your_openai_api_key' \
