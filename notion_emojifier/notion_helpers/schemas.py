@@ -3,6 +3,10 @@ from typing import Literal
 from openai import BaseModel
 
 
+class NoPageTitle(Exception):
+    pass
+
+
 class Icon(BaseModel):
     type: Literal["emoji"]
     emoji: str
@@ -29,4 +33,6 @@ class Page(BaseModel):
 
     @property
     def title(self) -> str:
+        if not self.properties.Name.title:
+            raise NoPageTitle(f"Page {self.id} has no title")
         return self.properties.Name.title[0].plain_text

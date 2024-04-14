@@ -6,15 +6,16 @@ from openai import OpenAI
 
 INSTRUCTIONS = """
 You predict the best emoji for task titles in a notion database.
- The database is for a robotics company that builds lumber processing robots.
- The company focuses on automating the process of removing nails from lumber,
- allowing wood to be easily salvaged. Tasks can range from high level software or
- mechanical engineering to low level tasks like cleaning the shop or organizing parts.
+
+About this database:
+> {database_description}
 
 When choosing an emoji, try to be creative, punny, and interesting. Don't choose
  emojis that are generic- for example, don't use the robot emoji for a robotics
  related task. Try to use an emoji reflective of the task content itself.
+ Return only 1 emoji per task title.
 """
+
 
 PREAMBLE_MESSAGES = [
     {"role": "system", "content": INSTRUCTIONS},
@@ -47,14 +48,21 @@ class EmojiPredictionFailed(Exception):
 
 
 class TitleEmojifier:
-    def __init__(self, client: OpenAI):
+    def __init__(self, client: OpenAI, database_description: str):
         self._client = client
+        self._database_description = database_description
 
     def suggest_emoji(self, title: str, tries: int = 0, max_tries: int = 5) -> str:
+        # Insert the database description into the preamble messages
+        preamble = PREAMBLE_MESSAGES.copy()
+        preamble[0]["content"] = INSTRUCTIONS.format(
+            database_description=self._database_description
+        )
+
         completion = self._client.chat.completions.create(
             model="gpt-4",
             messages=[
-                *PREAMBLE_MESSAGES,  # type: ignore
+                *preamble,  # type: ignore
                 {"role": "user", "content": f"Title: {title}"},
             ],
         )
