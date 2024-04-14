@@ -14,6 +14,7 @@ class DatabasePageIterator:
     def __iter__(self) -> Iterator[Page]:
         start_cursor = None
         while True:
+
             response: Any
             response = self._client.databases.query(
                 database_id=self._database_id, start_cursor=start_cursor
